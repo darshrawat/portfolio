@@ -11,6 +11,9 @@ import { EXPERIENCE_DATA } from "./ExperienceSection";
 extend({ TextGeometry });
 
 
+const isProd = process.env.NODE_ENV === "production";
+const assetPrefix = isProd ? "/portfolio" : "";
+
 export const PROJECTS = [
   { 
     id: 1, 
@@ -18,7 +21,7 @@ export const PROJECTS = [
     date: '2025 01.17', 
     description: 'A study on minimalist concrete structures and the intersection of shadow and architectural geometry.', 
     tags: ['Architecture', 'Photography', 'Minimalism'],
-    img: "/proj1.png" 
+    img: `${assetPrefix}/proj1.png` 
   },
   { 
     id: 2, 
@@ -26,7 +29,7 @@ export const PROJECTS = [
     date: '2024 11.02', 
     description: 'Hyper-detailed close-up exploration of digital organic forms and glowing fiber-optic structures.', 
     tags: ['CGI', 'Nature', 'Experimental'],
-    img: "/proj2.png" 
+    img: `${assetPrefix}/proj2.png` 
   },
   { 
     id: 3, 
@@ -34,7 +37,7 @@ export const PROJECTS = [
     date: '2024 08.24', 
     description: 'Cinematic night exploration of futuristic urban environments and vibrant neon reflections.', 
     tags: ['Urban', 'Cinematic', 'Lighting'],
-    img: "/proj3.png" 
+    img: `${assetPrefix}/proj3.png` 
   },
   { 
     id: 4, 
@@ -42,7 +45,7 @@ export const PROJECTS = [
     date: '2024 05.12', 
     description: 'Abstract digital glitch exploration focusing on fragmented geometric forms and cyan light.', 
     tags: ['Motion', 'Glitch', 'Digital Art'],
-    img: "/proj4.png" 
+    img: `${assetPrefix}/proj4.png` 
   },
   { 
     id: 5, 
@@ -50,7 +53,7 @@ export const PROJECTS = [
     date: '2024 02.15', 
     description: 'Massive obsidian structure study set within a high-fidelity cinematic desert environment.', 
     tags: ['Sci-Fi', 'Environment', 'CGI'],
-    img: "/proj5.png" 
+    img: `${assetPrefix}/proj5.png` 
   },
 ];
 
