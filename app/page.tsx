@@ -165,7 +165,7 @@ export default function PortfolioPage() {
           pointerEvents: 'none'
         }}
       >
-        <div className="project-hud">
+        <div className="project-hud" data-cursor="view">
           <div className="hud-top">
             <span id="hud-index" className="mono">01 //</span>
             <span id="hud-date" className="mono">2025 01.17</span>

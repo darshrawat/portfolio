@@ -117,7 +117,7 @@ export default function ExperienceSection() {
       </div>
 
       {/* 2D HUD SCRUBBER OVERLAY — Floats on top of the beautiful WebGL Scene */}
-      <div className="exp-scrubber" style={{ pointerEvents: "auto" }}>
+      <div className="exp-scrubber" style={{ pointerEvents: "auto" }} data-cursor="drag">
         <div className="exp-scrubber-label">
           <span className="exp-mono">EXPERIENCE_TIMELINE</span>
           <span className="exp-mono exp-accent">{timecode}</span>

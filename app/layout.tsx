@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 const Scene = dynamic(() => import("@/components/Scene"), { ssr: false });
 import LoadingScreen from "@/components/LoadingScreen";
 import AuraBackground from "@/components/AuraBackground";
+import CustomCursor from "@/components/CustomCursor";
 
 const bodoni = Bodoni_Moda({
   subsets: ["latin"],
@@ -44,6 +45,8 @@ export default function RootLayout({
       <body style={{ backgroundColor: "black", margin: 0, color: "white", overflowX: "hidden" }}>
         
         {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
+
+        <CustomCursor />
 
         <div className="grain-overlay" />
         <AuraBackground />

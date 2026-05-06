@@ -1854,3 +1854,56 @@ section[class*="-section"] {
     gap: 8px;
   }
 }
+
+/* ============================================================
+   CUSTOM PREMIUM INTERACTIVE CURSOR Styles
+   ============================================================ */
+
+/* Hide standard cursor only on hover-capable devices (desktop) */
+@media (hover: hover) and (pointer: fine) {
+  a, button, input, select, textarea, [role="button"], [data-cursor], iframe, select, option,
+  body, html, *, *:before, *:after {
+    cursor: none !important;
+  }
+}
+
+.custom-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  transition: width 0.22s ease-out, height 0.22s ease-out, background-color 0.22s ease-out, opacity 0.22s ease-out;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+.custom-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* Specific class modifiers to style nested label beautifully */
+.custom-cursor-label {
+  font-family: var(--font-mono), monospace;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  font-size: 8px;
+  text-transform: uppercase;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}

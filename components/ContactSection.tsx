@@ -306,6 +306,7 @@ export default function ContactSection() {
               target="_blank"
               rel="noopener noreferrer"
               className="contact-orbit-link"
+              data-cursor="view"
               whileHover={{
                 scale: 1.18,
                 borderColor: "#00f5ff",
