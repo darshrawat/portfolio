@@ -1,0 +1,32 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+web_modules/
+
+# Next.js build output
+.next/
+out/
+build/
+
+# Local environment files
+.env*.local
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Debug and log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# System files
+.DS_Store
+Thumbs.db
+
+# PM2 runtime or other process files
+pids/
+*.pid
+*.seed
+*.pid.lock

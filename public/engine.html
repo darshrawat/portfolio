@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DARSH_ENGINE_V9_RESTORED</title>
+    <style>
+        body { margin: 0; background: transparent; overflow: hidden; font-family: sans-serif; }
+        canvas { display: block; width: 100vw; height: 100vh; }
+    </style>
+</head>
+<body>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+        import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+        import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+
+        let scene, camera, renderer, monolith, nameText, renderTarget;
+        let mainScene, backgroundScene;
+        let targetScrollY = 0, scrollY = 0;
+        let targetMouseX = 0, mouseX = 0, targetMouseY = 0, mouseY = 0;
+
+        function init() {
+            mainScene = new THREE.Scene();
+            backgroundScene = new THREE.Scene();
+            
+            camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 100;
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            document.body.appendChild(renderer.domElement);
+
+            renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight);
+
+            const fontLoader = new FontLoader();
+            // Using a standard font to guarantee loading
+            fontLoader.load('https://threejs.org/examples/fonts/helvetiker_bold.typeface.json', (font) => {
+                // NAME (BACKGROUND)
+                const textGeo = new TextGeometry('DARSH', { font: font, size: 22, height: 0.1 });
+                textGeo.center();
+                nameText = new THREE.Mesh(textGeo, new THREE.MeshBasicMaterial({ color: 0xffffff }));
+                nameText.position.z = -30;
+                backgroundScene.add(nameText);
+
+                // D MONOLITH (FOREGROUND)
+                const dGeo = new TextGeometry('D', { font: font, size: 26, height: 10, curveSegments: 32, bevelEnabled: true, bevelThickness: 1, bevelSize: 0.5 });
+                dGeo.center();
+                
+                // Simple glass-like material that is GUARANTEED to be visible
+                const glassMat = new THREE.MeshPhysicalMaterial({
+                    color: 0xffffff,
+                    metalness: 0.1,
+                    roughness: 0.05,
+                    transmission: 0.95,
+                    thickness: 5,
+                    ior: 1.5,
+                    transparent: true,
+                    opacity: 0.6,
+                    envMapIntensity: 1
+                });
+                
+                monolith = new THREE.Mesh(dGeo, glassMat);
+                monolith.position.z = 10;
+                mainScene.add(monolith);
+                
+                // Add lights so the material is visible
+                const light1 = new THREE.DirectionalLight(0xffffff, 2);
+                light1.position.set(1, 1, 5);
+                mainScene.add(light1);
+                
+                const light2 = new THREE.AmbientLight(0x404040, 1);
+                mainScene.add(light2);
+            });
+
+            animate();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            scrollY = THREE.MathUtils.lerp(scrollY, targetScrollY, 0.05);
+            mouseX = THREE.MathUtils.lerp(mouseX, targetMouseX, 0.05);
+            mouseY = THREE.MathUtils.lerp(mouseY, targetMouseY, 0.05);
+
+            if (monolith) {
+                monolith.rotation.y = mouseX * 0.4 + scrollY * 0.5;
+                monolith.rotation.x = mouseY * -0.2;
+                
+                if (window.parent) {
+                    window.parent.postMessage({ 
+                        type: 'telemetry', 
+                        data: monolith.quaternion,
+                        velocity: Math.abs(scrollY - targetScrollY)
+                    }, '*');
+                }
+            }
+
+            renderer.setRenderTarget(null);
+            renderer.render(backgroundScene, camera);
+            
+            if (monolith) {
+                renderer.autoClear = false;
+                renderer.render(mainScene, camera);
+                renderer.autoClear = true;
+            }
+        }
+
+        window.addEventListener('message', (e) => {
+            if (e.data.type === 'scroll') targetScrollY = e.data.value;
+            if (e.data.type === 'mouse') {
+                targetMouseX = e.data.x;
+                targetMouseY = e.data.y;
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        init();
+    </script>
+</body>
+</html>
